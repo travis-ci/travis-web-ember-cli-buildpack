@@ -1,9 +1,8 @@
-#!/bin/sh
+#!/usr/bin/env bash
+# bin/detect <build-dir>
 
-if [ -f $1/Assetfile ]; then
-  echo "AssetPackager"
-  exit 0
+if [ -f $1/package.json ]; then
+  echo "Ember CLI" && exit 0
 else
-  echo "Assetfile not found"
-  exit 1
+  echo "no" && exit 1
 fi
