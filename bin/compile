@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-cat $1/last_pack_release.out.backup
+# Save result of the previous buildpack:
+cat $1/last_pack_release.out > $1/last_pack_release.out.backup
 
 # from tonycoco/heroku-buildpack-ember-cli
 
