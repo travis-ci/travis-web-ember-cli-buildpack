@@ -90,12 +90,12 @@ elif test -d $cache_dir/node/node_modules; then
 fi
 
 # Restore bower_components from cache if it exists
-if test -d $build_dir/bower_components; then
-  status "Found existing bower_components directory; skipping cache"
-elif test -d $cache_dir/bower_components; then
-  status "Restoring bower_components directory from cache"
-  cp -r $cache_dir/bower_components $build_dir/
-fi
+#if test -d $build_dir/bower_components; then
+#  status "Found existing bower_components directory; skipping cache"
+#elif test -d $cache_dir/bower_components; then
+#  status "Restoring bower_components directory from cache"
+#  cp -r $cache_dir/bower_components $build_dir/
+#fi
 
 status "Installing bower which is required by other dependencies"
 npm install bower --quiet --userconfig $build_dir/.npmrc 2>&1 | indent
