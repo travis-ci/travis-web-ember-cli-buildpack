@@ -89,18 +89,6 @@ elif test -d $cache_dir/node/node_modules; then
   fi
 fi
 
-# Restore bower_components from cache if it exists
-#if test -d $build_dir/bower_components; then
-#  status "Found existing bower_components directory; skipping cache"
-#elif test -d $cache_dir/bower_components; then
-#  status "Restoring bower_components directory from cache"
-#  cp -r $cache_dir/bower_components $build_dir/
-#fi
-
-status "Installing bower which is required by other dependencies"
-npm install bower --quiet --userconfig $build_dir/.npmrc 2>&1 | indent
-PATH=$build_dir/node_modules/bower/bin:$PATH
-
 if [ -d "$env_dir" ]; then
   status "Exporting config vars to environment"
   export_env_dir $env_dir
@@ -128,9 +116,6 @@ npm install --quiet --userconfig $build_dir/.npmrc 2>&1 | indent
 # Add the project's and ember-cli's dependencies' binaries to the PATH
 PATH=$build_dir/node_modules/.bin:$build_dir/node_modules/ember-cli/node_modules/.bin:$PATH
 
-status "Pruning cached bower dependencies not specified in bower.json"
-bower prune 2>&1 | indent
-
 # Persist goodies like node-version in the slug
 mkdir -p $build_dir/.heroku
 
@@ -156,19 +141,11 @@ status "Cleaning up node-gyp and npm artifacts"
 rm -rf "$build_dir/.node-gyp"
 rm -rf "$build_dir/.npm"
 
-bower install | indent
-
 if [ "$GIT_SSH_KEY" != "" ]; then
-  # Now that npm & bower have finished running, we should not need the ssh key anymore.  Kill ssh-agent
+  # Now that npm has finished running, we should not need the ssh key anymore.  Kill ssh-agent
   eval `ssh-agent -k`
   # Clear that sensitive key data from the environment
   export GIT_SSH_KEY=0
-fi
-
-# If app has a bower_components directory, cache it.
-if test -d $build_dir/bower_components; then
-  status "Caching bower_components directory for future builds"
-  cp -r $build_dir/bower_components $cache_dir/
 fi
 
 if test -f $build_dir/hooks/after_hook.sh; then
