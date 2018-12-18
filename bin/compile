@@ -157,3 +157,6 @@ status "Building Ember CLI application $build_env distribution"
 node_modules/ember-cli/bin/ember build --environment $build_env | indent
 find public/images -type d | cut -d "/" -f2- | xargs -n 1 -I {} mkdir -p dist/{}
 find public/images -type f | cut -d "/" -f2- | xargs -n 1 -I {} cp public/{} dist/{}
+
+status "Deleting node_modules"
+rm -rf "$build_dir/node_modules"
